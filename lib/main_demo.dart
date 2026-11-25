@@ -5,8 +5,7 @@ import 'demo_api/demo_app.dart';
 import 'demo_api/demo_session.dart';
 import 'demo_api/forum_api.dart';
 
-/// Point d'entree de la demo API. La version complete de Trame
-/// reste lancee par lib/main.dart, sans changement.
+/// Point d'entree de la demo Trame, reliee a l'API Symfony.
 // main() est la première fonction exécutée au lancement de l'application.
 void main() {
   // runApp affiche le widget racine. On lui donne le client API (pour parler

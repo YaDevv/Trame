@@ -12,35 +12,6 @@
         "--web-port",
         "8083"
       ]
-    },
-    {
-      "name": "Trame (navigateur, port 8081)",
-      "request": "launch",
-      "type": "dart",
-      "program": "lib/main.dart",
-      "deviceId": "web-server",
-      "args": [
-        "--web-port",
-        "8081"
-      ]
-    },
-    {
-      "name": "Trame (aperçu rapide, port 8082)",
-      "request": "launch",
-      "type": "dart",
-      "program": "lib/main.dart",
-      "deviceId": "web-server",
-      "flutterMode": "release",
-      "args": [
-        "--web-port",
-        "8082"
-      ]
-    },
-    {
-      "name": "Trame (appareil connecte)",
-      "request": "launch",
-      "type": "dart",
-      "program": "lib/main.dart"
     }
   ]
 }

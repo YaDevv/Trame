@@ -35,5 +35,5 @@ flutter test
 
 - `lib/main_demo.dart` : point d'entrée de la démo.
 - `lib/demo_api/` : écrans de la démo, session et client de l'API (`forum_api.dart`).
-- `lib/app`, `lib/core`, `lib/widgets` : thème, utilitaires et composants réutilisés par la démo.
+- `lib/app`, `lib/core`, `lib/models`, `lib/widgets` : thème, utilitaires, modèle utilisateur et composants visuels utilisés par la démo.
 - `test/demo_api_test.dart` : tests de la démo (avec une fausse API, sans réseau).
