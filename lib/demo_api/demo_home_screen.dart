@@ -134,27 +134,28 @@ class _JoinBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(16, 14, 12, 14),
-      decoration: BoxDecoration(
-        color: AppColors.primary.withValues(alpha: 0.08),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Row(
-        children: [
-          const Expanded(
-            child: Text(
-              'Rejoins la discussion : connecte-toi pour publier un message.',
-              style: TextStyle(fontSize: 14, height: 1.35, color: AppColors.ink),
+    // Card avec une couleur violet clair (8 %) et sans bordure.
+    return Card(
+      color: AppColors.primary.withValues(alpha: 0.08),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 14, 12, 14),
+        child: Row(
+          children: [
+            const Expanded(
+              child: Text(
+                'Rejoins la discussion : connecte-toi pour publier un message.',
+                style: TextStyle(fontSize: 14, height: 1.35, color: AppColors.ink),
+              ),
             ),
-          ),
-          const SizedBox(width: 8),
-          FilledButton(
-            onPressed: onSignIn,
-            style: FilledButton.styleFrom(shape: const StadiumBorder()),
-            child: const Text('Se connecter'),
-          ),
-        ],
+            const SizedBox(width: 8),
+            FilledButton(
+              onPressed: onSignIn,
+              style: FilledButton.styleFrom(shape: const StadiumBorder()),
+              child: const Text('Se connecter'),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -171,104 +172,99 @@ class DiscussionCard extends StatelessWidget {
     final message = discussion.message;
     final date = message.datePoste;
     final replies = discussion.replyCount;
-    return Container(
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppColors.card,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              ExcludeSemantics(
-                child: Container(
-                  width: 28,
-                  height: 28,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: avatarColorFor(message.auteur),
-                    shape: BoxShape.circle,
-                  ),
-                  child: Text(
-                    // L'avatar affiche l'initiale de l'auteur.
-                    message.auteur.characters.first.toUpperCase(),
-                    style: const TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
+    // Card : fond blanc, coins arrondis et bordure viennent du thème
+    // (cardTheme dans lib/app/theme.dart).
+    return Card(
+      child: Padding(
+        padding: const EdgeInsets.all(14),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                ExcludeSemantics(
+                  // CircleAvatar : un rond de 28 px (rayon 14) avec l'initiale.
+                  child: CircleAvatar(
+                    radius: 14,
+                    backgroundColor: avatarColorFor(message.auteur),
+                    child: Text(
+                      // L'avatar affiche l'initiale de l'auteur.
+                      message.auteur.characters.first.toUpperCase(),
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              Flexible(
-                child: Text(
-                  message.auteur,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 13.5,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.ink,
+                const SizedBox(width: 8),
+                Flexible(
+                  child: Text(
+                    message.auteur,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 13.5,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.ink,
+                    ),
                   ),
                 ),
+                if (date != null) ...[
+                  const SizedBox(width: 6),
+                  Text(
+                    // « il y a 5 min », « hier »… (voir lib/core/time_ago.dart).
+                    timeAgo(date),
+                    style: const TextStyle(
+                      fontSize: 12.5,
+                      color: AppColors.inkSoft,
+                    ),
+                  ),
+                ],
+              ],
+            ),
+            if (message.titre.isNotEmpty) ...[
+              const SizedBox(height: 10),
+              Text(message.titre, style: threadTitleStyle),
+            ],
+            const SizedBox(height: 6),
+            Text(
+              message.contenu,
+              // On n'affiche que les 4 premières lignes du message.
+              maxLines: 4,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(
+                fontSize: 14.5,
+                height: 1.4,
+                color: AppColors.ink,
               ),
-              if (date != null) ...[
+            ),
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                const Icon(
+                  Icons.chat_bubble_outline,
+                  size: 16,
+                  color: AppColors.inkSoft,
+                ),
                 const SizedBox(width: 6),
                 Text(
-                  // « il y a 5 min », « hier »… (voir lib/core/time_ago.dart).
-                  timeAgo(date),
-                  style: const TextStyle(
-                    fontSize: 12.5,
-                    color: AppColors.inkSoft,
+                  // Texte selon le nombre de réponses (switch avec motifs, Dart 3).
+                  switch (replies) {
+                    0 => 'Aucune réponse',
+                    1 => '1 réponse',
+                    final n => '$n réponses',
+                  },
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: replies > 0 ? FontWeight.w600 : FontWeight.w400,
+                    color: replies > 0 ? AppColors.primary : AppColors.inkSoft,
                   ),
                 ),
               ],
-            ],
-          ),
-          if (message.titre.isNotEmpty) ...[
-            const SizedBox(height: 10),
-            Text(message.titre, style: threadTitleStyle),
-          ],
-          const SizedBox(height: 6),
-          Text(
-            message.contenu,
-            // On n'affiche que les 4 premières lignes du message.
-            maxLines: 4,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              fontSize: 14.5,
-              height: 1.4,
-              color: AppColors.ink,
             ),
-          ),
-          const SizedBox(height: 10),
-          Row(
-            children: [
-              const Icon(
-                Icons.chat_bubble_outline,
-                size: 16,
-                color: AppColors.inkSoft,
-              ),
-              const SizedBox(width: 6),
-              Text(
-                // Texte selon le nombre de réponses (switch avec motifs, Dart 3).
-                switch (replies) {
-                  0 => 'Aucune réponse',
-                  1 => '1 réponse',
-                  final n => '$n réponses',
-                },
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: replies > 0 ? FontWeight.w600 : FontWeight.w400,
-                  color: replies > 0 ? AppColors.primary : AppColors.inkSoft,
-                ),
-              ),
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

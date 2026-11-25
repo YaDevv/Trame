@@ -141,5 +141,16 @@ ThemeData buildAppTheme() {
       surfaceTintColor: Colors.transparent,
     ),
     dividerTheme: const DividerThemeData(color: AppColors.border, space: 1),
+    // Cartes (widget Card) : fond blanc, coins arrondis, bordure fine,
+    // sans ombre ni marge. Toutes les Card de l'appli prennent ce style.
+    cardTheme: CardThemeData(
+      color: AppColors.card,
+      elevation: 0,
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: const BorderSide(color: AppColors.border),
+      ),
+    ),
   );
 }

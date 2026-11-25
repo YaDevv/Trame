@@ -135,14 +135,10 @@ class _Header extends StatelessWidget {
     final color = isAdmin ? AppColors.accent : AppColors.primary;
     return Column(
       children: [
-        Container(
-          width: 76,
-          height: 76,
-          alignment: Alignment.center,
-          decoration: const BoxDecoration(
-            color: AppColors.primary,
-            shape: BoxShape.circle,
-          ),
+        // Grand avatar rond de 76 px (rayon 38) avec l'initiale.
+        CircleAvatar(
+          radius: 38,
+          backgroundColor: AppColors.primary,
           child: Text(
             name.characters.first.toUpperCase(),
             style: const TextStyle(
@@ -208,46 +204,48 @@ class _InfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(16, 6, 16, 6),
-      decoration: BoxDecoration(
-        color: AppColors.card,
+    // Card : style du thème, avec des coins un peu plus arrondis (18).
+    return Card(
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AppColors.border),
+        side: const BorderSide(color: AppColors.border),
       ),
-      child: Column(
-        children: [
-          for (var i = 0; i < rows.length; i++) ...[
-            if (i > 0) const Divider(height: 1),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: 110,
-                    child: Text(
-                      rows[i].$1,
-                      style: const TextStyle(
-                        fontSize: 13.5,
-                        color: AppColors.inkSoft,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(16, 6, 16, 6),
+        child: Column(
+          children: [
+            for (var i = 0; i < rows.length; i++) ...[
+              if (i > 0) const Divider(height: 1),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 110,
+                      child: Text(
+                        rows[i].$1,
+                        style: const TextStyle(
+                          fontSize: 13.5,
+                          color: AppColors.inkSoft,
+                        ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      rows[i].$2.isEmpty ? '—' : rows[i].$2,
-                      style: const TextStyle(
-                        fontSize: 14.5,
-                        color: AppColors.ink,
+                    Expanded(
+                      child: Text(
+                        rows[i].$2.isEmpty ? '—' : rows[i].$2,
+                        style: const TextStyle(
+                          fontSize: 14.5,
+                          color: AppColors.ink,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
